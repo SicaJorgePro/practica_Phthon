@@ -1,5 +1,9 @@
+import os
+import sys
 def crear_lista():
+ 
   while True:  # Bucle para permitir al usuario ingresar la lista varias veces
+    os.system('cls')  # Limpiar la pantalla en Windows 
     try:
         # Solicitar al usuario que ingrese lenguajes separados por comas
         lenguajes_input = input("Ingrese una lista de lenguajes de programación separados por comas: ")
@@ -15,66 +19,74 @@ def crear_lista():
         # Validar que cada lenguaje no sea un número
         for lenguaje in lenguajes_lista:
             if lenguaje.isdigit():  # Si es solo un número, lo rechazamos
-                raise ValueError(f"Error: '{lenguaje}' no es un lenguaje válido. Los números no están permitidos.")
+                raise ValueError(f"'{lenguaje}' no es un lenguaje válido. Los números no están permitidos.")
                        
-        # Si no se encontró ningún número, la lista es válida
+        
         return lenguajes_lista  # Devolver la lista válida     
         
     except ValueError as e:
-        print(f"Error: {e}")
+        print(f"\nError: {e}")
+        input("Presiona Enter para continuar...")
         continue
  
 def agregar_lenguaje(lista_lenguajes):
-    try:
-        while True:
+    while True:
+        try:   
             # Solicitar al usuario que ingrese el nuevo lenguaje
             nuevo_lenguaje = input("Ingrese el nuevo lenguaje que desea agregar: ").strip()
             
             # Validar que el lenguaje no esté vacío
             if not nuevo_lenguaje:
-                print("Error: No ingresó un lenguaje válido. Por favor ingrese un lenguaje no vacío.")
-                
-            elif nuevo_lenguaje.isdigit():
-                print("Error: No puede ingresar un número como lenguaje. Por favor ingrese un lenguaje válido.")    
-                
-            else:
+                raise ValueError("No ingresó un lenguaje válido. Por favor ingrese un lenguaje no vacío.")
+
+            if nuevo_lenguaje.isdigit():
+                raise ValueError("No puede ingresar un número como lenguaje. Por favor ingrese un lenguaje válido.")    
+            
+            else:   
                 lista_lenguajes.append(nuevo_lenguaje.lower())
                 break  # Salir del bucle cuando se ingresa un lenguaje válido    
-          
-        return lista_lenguajes
-      
-    except ValueError as e:
-        print(f"Error: {e}")
-        return lista_lenguajes
+
+        except ValueError as e:
+            print(f"Error: {e}")
+            input("Presiona Enter para continuar...")
+            continue
+        
+    return lista_lenguajes
 
 def eliminar_lenguaje(lista_lenguajes):
-    try:
-        while True:
+    while True:
+        try:
+            # Solicitar al usuario el lenguaje a eliminar
             lenguaje_a_eliminar = input("Ingrese el lenguaje a eliminar: ").strip()
-            
-            # Validar que el lenguaje no esté vacío
+
+            # Verificar que la entrada no esté vacía
             if not lenguaje_a_eliminar:
-                print("Error: No ingresó un lenguaje válido. Por favor ingrese un lenguaje no vacío.")
-                
+                raise ValueError("No ingresó un lenguaje válido. Por favor ingrese un lenguaje no vacío.")
+
+            # Verificar si la entrada es un número
+            if lenguaje_a_eliminar.isdigit():
+                raise ValueError("No es un lenguaje válido, los números no se permiten.")  
+
+            # Convertir la entrada a minúsculas para hacer la comparación insensible a mayúsculas
+            lenguaje_a_eliminar = lenguaje_a_eliminar.lower()
+
+            # Intentar eliminar el lenguaje de la lista
+            if lenguaje_a_eliminar in lista_lenguajes:
+                lista_lenguajes.remove(lenguaje_a_eliminar)
+                print(f"El lenguaje '{lenguaje_a_eliminar}' ha sido eliminado de la lista.")
+                break  # Salir del bucle una vez que el lenguaje ha sido eliminado
             else:
-                break  # Salir del bucle cuando se ingresa un lenguaje válido
-              
-        # Convertir la entrada del lenguaje a eliminar a minúsculas
-        lenguaje_a_eliminar = lenguaje_a_eliminar.lower()
-        
-        # Intentar eliminar el lenguaje de la lista
-        if lenguaje_a_eliminar in lista_lenguajes:
-            lista_lenguajes.remove(lenguaje_a_eliminar)
-            print(f"El lenguaje '{lenguaje_a_eliminar}' ha sido eliminado de la lista.")
-        else:
-            print(f"El lenguaje '{lenguaje_a_eliminar}' no se encuentra en la lista, Nada se elimino.")
-      
-        return lista_lenguajes
-      
-    except ValueError as e:
-        print(f"Ocurrió un error inesperado: {e}")
-        return lista_lenguajes  # Retorna la lista sin cambios en caso de error
-      
+                raise ValueError(f"El lenguaje '{lenguaje_a_eliminar}' no se encuentra en la lista. Nada se eliminó.")
+               
+
+        except ValueError as e:
+            # Mostrar el error y continuar pidiendo la entrada
+            print(f"Error: {e}")
+            input("Presiona Enter para continuar...")
+            continue  # Volver al principio del bucle si hay un error
+
+    return lista_lenguajes
+     
     
 def encontrar_mas_extenso(lista_lenguajes):
     try:
@@ -94,8 +106,9 @@ def encontrar_mas_extenso(lista_lenguajes):
       
 
 # Crear la lista inicial de lenguajes
-
+os.system('cls')  # Limpiar la pantalla en Windows
 lenguajes = crear_lista()
+
 
 if lenguajes:  # Solo continuar si la lista no está vacía
   
